@@ -1,24 +1,55 @@
 #include "main.h"
 
-void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-static void MX_USART2_UART_Init(void);
+#define BOOTLOADER_SIZE 0x8000u
+#define FIRMWARE_ADDRESS FLASH_BASE + BOOTLOADER_SIZE
 
-int main(void)
+void button_setup()
+{
+  RCC->AHBENR |= RCC_AHBENR_GPIOCEN;
+  GPIOC->PUPDR |= 0b01 << GPIO_PUPDR_PUPDR13_Pos; //pull-up 
+}
+
+void system_setup()
 {
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
-
-  //NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0);
-
   SystemClock_Config();
 
   MX_GPIO_Init();
   MX_USART2_UART_Init();
 
+  button_setup();
+}
+
+void jump_to_firmware()
+{
+  uint32_t firmware_stack = *(volatile uint32_t*)FIRMWARE_ADDRESS;
+  uint32_t firmware_reset_handler = *(volatile uint32_t*)(FIRMWARE_ADDRESS + 4);
+  
+  typedef void (*pFunction)(void);
+  pFunction app_entry = (pFunction)firmware_reset_handler;
+
+  SCB->VTOR = FIRMWARE_ADDRESS;
+
+  __set_MSP(firmware_stack);
+
+  app_entry();
+}
+
+int main(void)
+{
+  system_setup();
+
   while (1)
   {
+    if(GPIOC->IDR & GPIO_IDR_13)
+    {
+    }
 
+    else
+    {
+      jump_to_firmware();
+    }
   }
 }
 
