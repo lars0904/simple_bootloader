@@ -18,13 +18,17 @@ void system_setup()
 void jump_to_firmware()
 {
   uint32_t firmware_stack = *(volatile uint32_t*)FIRMWARE_ADDRESS;
-  uint32_t firmware_reset_handler = *(volatile uint32_t*)(FIRMWARE_ADDRESS + 4);
+  uint32_t firmware_reset_handler = *(volatile uint32_t*)(FIRMWARE_ADDRESS + 4); 
   
   typedef void (*pFunction)(void);
   pFunction app_entry = (pFunction)firmware_reset_handler;
 
   SCB->VTOR = FIRMWARE_ADDRESS;
 
+  LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_ALL);
+  LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_ALL);
+  LL_AHB1_GRP1_ForceReset(LL_AHB1_GRP1_PERIPH_ALL);
+  
   __set_MSP(firmware_stack);
 
   app_entry();
