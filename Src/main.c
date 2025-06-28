@@ -28,6 +28,7 @@ void jump_to_firmware()
   LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_ALL);
   LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_ALL);
   LL_AHB1_GRP1_ForceReset(LL_AHB1_GRP1_PERIPH_ALL);
+  __disable_irq();
   
   __set_MSP(firmware_stack);
 
