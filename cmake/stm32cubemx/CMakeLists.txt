@@ -20,6 +20,7 @@ set(MX_Defines_Syms
 # STM32CubeMX generated include paths
 set(MX_Include_Dirs
     ${CMAKE_SOURCE_DIR}/Inc
+    ${CMAKE_SOURCE_DIR}/Inc/system
     ${CMAKE_SOURCE_DIR}/Drivers/STM32F3xx_HAL_Driver/Inc
     ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32F3xx/Include
     ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Include
@@ -28,15 +29,15 @@ set(MX_Include_Dirs
 # STM32CubeMX generated application sources
 set(MX_Application_Src
     ${CMAKE_SOURCE_DIR}/Src/main.c
-    ${CMAKE_SOURCE_DIR}/Src/stm32f3xx_it.c
-    ${CMAKE_SOURCE_DIR}/Src/sysmem.c
-    ${CMAKE_SOURCE_DIR}/Src/syscalls.c
+    ${CMAKE_SOURCE_DIR}/Src/system/stm32f3xx_it.c
+    ${CMAKE_SOURCE_DIR}/Src/system/sysmem.c
+    ${CMAKE_SOURCE_DIR}/Src/system/syscalls.c
     ${CMAKE_SOURCE_DIR}/startup_stm32f303xe.s
 )
 
 # STM32 HAL/LL Drivers
 set(STM32_Drivers_Src
-    ${CMAKE_SOURCE_DIR}/Src/system_stm32f3xx.c
+    ${CMAKE_SOURCE_DIR}/Src/system/system_stm32f3xx.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_ll_utils.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_ll_exti.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_ll_gpio.c
