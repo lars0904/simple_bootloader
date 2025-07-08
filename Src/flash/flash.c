@@ -56,7 +56,7 @@ void Lock_flash()
 
 Error_code Write_flash(void* data, size_t dataSize, uint32_t address)
 {   
-    if(data == NULL || dataSize < 1 || (dataSize % 2) != 0, address < FLASH_BASE || (address % 2048) != 0 )
+    if(data == NULL || dataSize < 1 || (dataSize % 2) != 0 || address < FLASH_BASE || (address % 2048) != 0 )
     {
         return ERROR_INVALID_PARAMETER;
     }
